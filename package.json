@@ -1,25 +1,16 @@
 {
-  "name": "screenshot-project",
+  "name": "test",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "screenshot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "[![\"Today's Tips - Events Happening Today in Hamburg\"](images/11.png)](https://rausgegangen.de/en/hamburg/)",
+  "type": "commonjs",
   "dependencies": {
-    "puppeteer": "^23.11.1",
-    "puppeteer-core": "^24.6.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Rouzihiro/Hamburg-Events.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Rouzihiro/Hamburg-Events/issues"
-  },
-  "homepage": "https://github.com/Rouzihiro/Hamburg-Events#readme",
-  "devDependencies": {}
+    "playwright": "^1.52.0"
+  }
 }

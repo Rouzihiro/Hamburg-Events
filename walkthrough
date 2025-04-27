@@ -1,5 +1,6 @@
 git remote set-url origin git@github.com:Rouzihiro/Hamburg-Events.git
 ssh -T git@github.com
 
-npm install puppeteer-core
+npm install playwright
+npm install playwright@latest
 npm init -y
