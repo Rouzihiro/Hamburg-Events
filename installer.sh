@@ -2,7 +2,7 @@
 set -e
 
 echo "🔧 Installing Node.js and npm..."
-sudo dnf install -y nodejs npm
+# sudo dnf install -y nodejs npm
 
 # echo "📦 Installing required system dependencies for Chromium..."
 # sudo dnf install -y \
