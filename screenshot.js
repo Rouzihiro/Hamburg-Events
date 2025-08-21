@@ -8,7 +8,7 @@ const urls = [
   'https://nochtspeicher.de/',
   'https://molotowclub.com/programm/programm.php',
   'https://spielbudenplatz.eu/erleben/events',
-  'https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor/jetzt-im-kino/top-kinofilme?Datum=26-08-2024',
+	'https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor/jetzt-im-kino/top-kinofilme',
   'https://schanzenkino.de/programm',
   'http://www.abaton.de/page.pl?index',
   'https://programm.ponybar.de/',
