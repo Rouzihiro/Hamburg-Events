@@ -8,7 +8,7 @@ const urls = [
   'https://nochtspeicher.de/',
   'https://molotowclub.com/programm/programm.php',
   'https://spielbudenplatz.eu/erleben/events',
-	'https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor/jetzt-im-kino/top-kinofilme',
+	'https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor',
   'https://schanzenkino.de/programm',
   'http://www.abaton.de/page.pl?index',
   'https://programm.ponybar.de/',
@@ -19,6 +19,9 @@ const urls = [
   'https://www.zwick4u.com/live-musik-de-16.html',
   'https://www.zwick4u.com/sport-live-de-17.html',
   'https://www.mojo.de/programme/',
+	'https://hamburg.premiumkino.de/filmvorschau',
+	'https://hamburg.premiumkino.de/programm',
+
 ];
 
 (async () => {

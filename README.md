@@ -189,6 +189,48 @@
 
 </details>
 
+### Astor Filmkunsttheater Hamburg - Klassiker & Arthouse
+
+[![Astor Filmkunsttheater Hamburg](images/16.png)](https://www.astor-filmkunst.de/)
+[![Astor Filmkunsttheater Hamburg](images/17.png)](https://www.astor-filmkunst.de/)
+
+- [Google Maps Location](https://maps.app.goo.gl/64cHFjoED6hhuhmS6)
+
+<details>
+  <summary>More Information</summary>
+  
+  **Address:** Colonnaden 96, 20354 Hamburg  
+  **Website:** [https://www.astor-filmkunst.de/](https://www.astor-filmkunst.de/)  
+  **Email:** [info@astor-filmkunst.de](mailto:info@astor-filmkunst.de)  
+  **Phone:** +49403451741  
+
+  **Background:**  
+  The Astor Filmkunsttheater is one of Hamburg's most beautiful and historic cinemas, known for its elegant atmosphere and carefully curated program. Located near the Hauptbahnhof, it's easily accessible by public transportation.
+
+  **Programming:**  
+  Specializes in classic films, arthouse cinema, cult movies, and special film series. The theater often features director retrospectives, themed weeks, and restored classic films.
+
+  **Ticket Prices:**  
+  - Regular: €9.50  
+  - Reduced (students, seniors): €8.50  
+  - Special events: Prices may vary
+
+  **Atmosphere:**  
+  The Astor boasts a luxurious interior with red velvet seats, classic decor, and excellent projection quality, offering a premium cinema experience.
+
+  **Unique Features:**  
+  - Single-screen theater with intimate atmosphere  
+  - High-quality projection and sound systems  
+  - Special events with introductions and discussions  
+  - Historical venue with character  
+  - Carefully curated film selection
+
+  **Reviews:**  
+  Known for its exceptional programming and beautiful ambiance, the Astor is highly rated by film enthusiasts for its unique cinematic experience.
+</details>
+
+
+
 ### Cinemaxx Hamburg Dammtor - Top Kinofilme
 
 [![Cinemaxx Hamburg Dammtor - Top Kinofilme](images/5.png)](https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor/jetzt-im-kino/top-kinofilme?Datum=26-08-2024)
@@ -402,5 +444,3 @@
 
    **Overview:**  
    Nachtasyl is an attractive venue for those looking for a diverse night out in Hamburg. Offering a mix of concerts, readings, and club events, it provides various options for entertainment and relaxation.  
-
-</details>
