@@ -1,19 +1,70 @@
 [
-  "https://www.knusthamburg.de/programm/",
-  "https://nochtspeicher.de/",
-  "https://molotowclub.com/programm/programm.php",
-  "https://spielbudenplatz.eu/erleben/events",
-  "https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor",
-  "https://schanzenkino.de/programm",
-  "http://www.abaton.de/page.pl?index",
-  "https://programm.ponybar.de/",
-  "https://www.uebelundgefaehrlich.com/",
-  "https://www.hafenklang.com/programm/",
-  "https://rausgegangen.de/en/hamburg/",
-  "http://nachtasyl.de/",
-  "https://www.zwick4u.com/live-musik-de-16.html",
-  "https://www.zwick4u.com/sport-live-de-17.html",
-  "https://www.mojo.de/programme/",
-  "https://hamburg.premiumkino.de/filmvorschau",
-  "https://hamburg.premiumkino.de/programm"
+  {
+    "url": "https://www.knusthamburg.de/programm/",
+    "strategy": "tall-default-25-5-35-200"
+  },
+  {
+    "url": "https://nochtspeicher.de",
+    "strategy": "default"
+  },
+  {
+    "url": "https://molotowclub.com/programm/programm.php",
+    "strategy": "tall-default-30-15-15-200"
+  },
+  {
+    "url": "https://spielbudenplatz.eu/erleben/events",
+    "strategy": "tall-reject"
+  },
+  {
+    "url": "https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor",
+    "strategy": "tall-reject"
+  },
+  {
+    "url": "https://schanzenkino.de/programm",
+    "strategy": "tall-default-20-0-0-100"
+  },
+  {
+    "url": "http://www.abaton.de/page.pl?index",
+    "strategy": "tall-reject-0-0-0-300"
+  },
+  {
+    "url": "https://programm.ponybar.de/",
+    "strategy": "tall-default-35-0-0-300"
+  },
+  {
+    "url": "https://www.uebelundgefaehrlich.com/",
+    "strategy": "old"
+  },
+  {
+    "url": "https://www.hafenklang.com/programm/",
+    "strategy": "tall-default-30-0-30-300"
+  },
+  {
+    "url": "https://rausgegangen.de/en/hamburg/",
+    "strategy": "tall-accept-0-0-0-300"
+  },
+  {
+    "url": "http://nachtasyl.de/",
+    "strategy": "tall-default-70-10-10-300"
+  },
+  {
+    "url": "https://www.zwick4u.com/live-musik-de-16.html",
+    "strategy": "tall-default"
+  },
+  {
+    "url": "https://www.zwick4u.com/sport-live-de-17.html",
+    "strategy": "tall-default"
+  },
+  {
+    "url": "https://www.mojo.de/programme/",
+    "strategy": "tall-default-0-0-0-300"
+  },
+  {
+    "url": "https://hamburg.premiumkino.de/filmvorschau",
+    "strategy": "tall-old-20-15-0-500"
+  },
+  {
+    "url": "https://hamburg.premiumkino.de/specials",
+    "strategy": "tall-reject"
+  }
 ]

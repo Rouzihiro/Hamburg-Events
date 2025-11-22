@@ -2,8 +2,11 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-// Load URLs from external file
-const urls = require('./urls.json');
+// Load strategies
+const strategies = require('./strategies');
+
+// Load URLs with strategies
+const urlConfigs = require('./urls.json');
 
 (async () => {
   const browser = await chromium.launch({
@@ -16,44 +19,69 @@ const urls = require('./urls.json');
     fs.mkdirSync(imagesDir);
   }
 
-  console.log(`📸 Capturing ${urls.length} URLs...`);
+  console.log(`📸 Capturing ${urlConfigs.length} URLs`);
+  console.log(`🛠 Available strategies: ${Object.keys(strategies).filter(k => k !== 'get').join(', ')}`);
 
-  for (let i = 0; i < urls.length; i++) {
+  for (let i = 0; i < urlConfigs.length; i++) {
+    const { url, strategy = 'default' } = urlConfigs[i];
     const page = await browser.newPage();
-    const url = urls[i];
+    
+    page.url = url; // Store URL for strategies to access
 
+    // Set default viewport (will be overridden by strategies if needed)
     await page.setViewportSize({ width: 1200, height: 800 });
 
     try {
-      console.log(`Processing ${i + 1}/${urls.length}: ${url}`);
+      console.log(`\n${i + 1}/${urlConfigs.length}: ${url}`);
+      console.log(`  Strategy: ${strategy}`);
 
-      // Navigate with minimal waiting
-      await page.goto(url, { 
-        waitUntil: 'domcontentloaded',
-        timeout: 15000 
-      });
+      // Get and execute the strategy
+      const strategyFn = strategies.get(strategy);
+      const result = await strategyFn(page);
 
-      // Quick cookie removal
-      await page.evaluate(() => {
-        const banners = [
-          '.cookie-banner', '.cookie-notice', '#cookie', 
-          '.cc-banner', '[class*="cookie"]', '[id*="cookie"]'
-        ];
-        banners.forEach(selector => {
-          document.querySelectorAll(selector).forEach(el => el.remove());
-        });
-      });
+      // Configure screenshot based on strategy return
+      const screenshotOptions = { 
+        path: path.join(imagesDir, `${i + 1}.png`)
+      };
 
-      // Take screenshot immediately
-      await page.screenshot({ 
-        path: path.join(imagesDir, `${i + 1}.png`),
-        clip: { x: 0, y: 0, width: 1200, height: 700 }
-      });
+      // If strategy returns custom options, use them
+      if (result) {
+        if (result.fullPage !== undefined) {
+          screenshotOptions.fullPage = result.fullPage;
+        }
+        if (result.clip) {
+          screenshotOptions.clip = result.clip;
+        }
+        if (result.width) {
+          // Adjust viewport if strategy specifies width
+          await page.setViewportSize({ 
+            width: result.width, 
+            height: page.viewportSize().height 
+          });
+        }
+      } else {
+        // Default behavior
+        screenshotOptions.clip = { x: 0, y: 0, width: 1200, height: 700 };
+      }
 
-      console.log(`  ✓ Saved: ${i + 1}.png`);
+      // Take screenshot
+      await page.screenshot(screenshotOptions);
+
+      console.log(`  ✅ Saved: ${i + 1}.png`);
 
     } catch (error) {
-      console.error(`  ✗ Failed: ${error.message}`);
+      console.error(`  ❌ Failed: ${error.message}`);
+      
+      // Try to save screenshot anyway with default settings
+      try {
+        await page.screenshot({ 
+          path: path.join(imagesDir, `${i + 1}.png`),
+          clip: { x: 0, y: 0, width: 1200, height: 700 }
+        });
+        console.log(`  ⚠ Saved screenshot despite errors`);
+      } catch (e) {
+        console.error(`  ❌ Could not save screenshot: ${e.message}`);
+      }
     } finally {
       await page.close();
     }
