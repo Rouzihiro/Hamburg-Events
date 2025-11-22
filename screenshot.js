@@ -1,74 +1,64 @@
-const { chromium } = require('playwright');  // Use Playwright for a more native solution
+const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-// List of URLs to capture
-const urls = [
-  'https://www.knusthamburg.de/programm/',
-  'https://nochtspeicher.de/',
-  'https://molotowclub.com/programm/programm.php',
-  'https://spielbudenplatz.eu/erleben/events',
-	'https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor',
-  'https://schanzenkino.de/programm',
-  'http://www.abaton.de/page.pl?index',
-  'https://programm.ponybar.de/',
-  'https://www.uebelundgefaehrlich.com/',
-  'https://www.hafenklang.com/programm/',
-  'https://rausgegangen.de/en/hamburg/',
-  'http://nachtasyl.de/',
-  'https://www.zwick4u.com/live-musik-de-16.html',
-  'https://www.zwick4u.com/sport-live-de-17.html',
-  'https://www.mojo.de/programme/',
-	'https://hamburg.premiumkino.de/filmvorschau',
-	'https://hamburg.premiumkino.de/programm',
-
-];
+// Load URLs from external file
+const urls = require('./urls.json');
 
 (async () => {
-  // Launch the browser using Playwright, no need for the executable path
   const browser = await chromium.launch({
-    headless: true,  // Ensures it's headless
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Keep sandbox settings if necessary
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
-  // Ensure the 'images' directory exists
   const imagesDir = path.join(__dirname, 'images');
   if (!fs.existsSync(imagesDir)) {
     fs.mkdirSync(imagesDir);
   }
 
-  // Iterate through the URLs
+  console.log(`📸 Capturing ${urls.length} URLs...`);
+
   for (let i = 0; i < urls.length; i++) {
     const page = await browser.newPage();
     const url = urls[i];
 
-    // Block cookie/consent requests using 'route' event
-    await page.route('**/*', (route, request) => {
-      const reqUrl = request.url();
-      if (reqUrl.includes('cookie') || reqUrl.includes('consent')) {
-        route.abort();  // Block the request
-      } else {
-        route.continue();  // Allow the request
-      }
-    });
+    await page.setViewportSize({ width: 1200, height: 800 });
 
-    // Navigate and wait
-    await page.goto(url, { waitUntil: 'networkidle' });
+    try {
+      console.log(`Processing ${i + 1}/${urls.length}: ${url}`);
 
-    // Set viewport for screenshot
-    await page.setViewportSize({ width: 800, height: 1600 });
+      // Navigate with minimal waiting
+      await page.goto(url, { 
+        waitUntil: 'domcontentloaded',
+        timeout: 15000 
+      });
 
-    // Screenshot path
-    const screenshotPath = path.join(imagesDir, `${i + 1}.png`);
+      // Quick cookie removal
+      await page.evaluate(() => {
+        const banners = [
+          '.cookie-banner', '.cookie-notice', '#cookie', 
+          '.cc-banner', '[class*="cookie"]', '[id*="cookie"]'
+        ];
+        banners.forEach(selector => {
+          document.querySelectorAll(selector).forEach(el => el.remove());
+        });
+      });
 
-    // Take screenshot
-    await page.screenshot({ path: screenshotPath });
+      // Take screenshot immediately
+      await page.screenshot({ 
+        path: path.join(imagesDir, `${i + 1}.png`),
+        clip: { x: 0, y: 0, width: 1200, height: 700 }
+      });
 
-    console.log(`Screenshot of ${url} saved as ${screenshotPath}`);
+      console.log(`  ✓ Saved: ${i + 1}.png`);
 
-    await page.close();
+    } catch (error) {
+      console.error(`  ✗ Failed: ${error.message}`);
+    } finally {
+      await page.close();
+    }
   }
 
   await browser.close();
+  console.log('\n🎉 All screenshots completed!');
 })();
-
