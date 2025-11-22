@@ -1,74 +1,135 @@
-const { chromium } = require('playwright');  // Use Playwright for a more native solution
+const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-// List of URLs to capture
-const urls = [
-  'https://www.knusthamburg.de/programm/',
-  'https://nochtspeicher.de/',
-  'https://molotowclub.com/programm/programm.php',
-  'https://spielbudenplatz.eu/erleben/events',
-	'https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor',
-  'https://schanzenkino.de/programm',
-  'http://www.abaton.de/page.pl?index',
-  'https://programm.ponybar.de/',
-  'https://www.uebelundgefaehrlich.com/',
-  'https://www.hafenklang.com/programm/',
-  'https://rausgegangen.de/en/hamburg/',
-  'http://nachtasyl.de/',
-  'https://www.zwick4u.com/live-musik-de-16.html',
-  'https://www.zwick4u.com/sport-live-de-17.html',
-  'https://www.mojo.de/programme/',
-	'https://hamburg.premiumkino.de/filmvorschau',
-	'https://hamburg.premiumkino.de/programm',
+// Load URLs with strategies
+const urlConfigs = require('./urls.json');
 
-];
+// Strategy implementations
+const strategies = {
+  // NEW FAST APPROACH - DOM removal only
+  default: async (page) => {
+    await page.goto(page.url, { 
+      waitUntil: 'domcontentloaded',
+      timeout: 15000 
+    });
+    
+    await page.evaluate(() => {
+      const banners = [
+        '.cookie-banner', '.cookie-notice', '#cookie', 
+        '.cc-banner', '[class*="cookie"]', '[id*="cookie"]'
+      ];
+      banners.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => el.remove());
+      });
+    });
+    
+    await page.waitForTimeout(1000);
+  },
+  
+  // OLD WORKING APPROACH - More aggressive cookie handling
+  old: async (page) => {
+    // Use the original approach that worked for these sites
+    await page.goto(page.url, { 
+      waitUntil: 'networkidle',
+      timeout: 30000 
+    });
+    
+    await page.waitForTimeout(3000);
+    
+    // Try to click accept buttons
+    const ACCEPT_TEXTS = ['Akzeptieren', 'Accept', 'Einwilligen', 'Zustimmen'];
+    
+    for (const text of ACCEPT_TEXTS) {
+      try {
+        const button = await page.waitForSelector(`button:has-text("${text}")`, { 
+          timeout: 2000 
+        });
+        if (button) {
+          await button.click();
+          await page.waitForTimeout(1500);
+          break;
+        }
+      } catch (e) {
+        // Continue to next text
+      }
+    }
+    
+    // Fallback to DOM removal
+    await page.evaluate(() => {
+      const banners = [
+        '.cookie', '[class*="cookie"]', '[id*="cookie"]',
+        '.consent', '[class*="consent"]', '[id*="consent"]', 
+        '.gdpr', '[class*="gdpr"]', '[id*="gdpr"]'
+      ];
+      
+      banners.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+          if (el.offsetParent !== null) {
+            el.remove();
+          }
+        });
+      });
+    });
+    
+    await page.waitForTimeout(2000);
+  }
+};
 
 (async () => {
-  // Launch the browser using Playwright, no need for the executable path
   const browser = await chromium.launch({
-    headless: true,  // Ensures it's headless
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Keep sandbox settings if necessary
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
-  // Ensure the 'images' directory exists
   const imagesDir = path.join(__dirname, 'images');
   if (!fs.existsSync(imagesDir)) {
     fs.mkdirSync(imagesDir);
   }
 
-  // Iterate through the URLs
-  for (let i = 0; i < urls.length; i++) {
+  console.log(`📸 Capturing ${urlConfigs.length} URLs with custom strategies...`);
+
+  for (let i = 0; i < urlConfigs.length; i++) {
+    const { url, strategy = 'default' } = urlConfigs[i];
     const page = await browser.newPage();
-    const url = urls[i];
+    
+    // Store URL on page object for strategies to access
+    page.url = url;
 
-    // Block cookie/consent requests using 'route' event
-    await page.route('**/*', (route, request) => {
-      const reqUrl = request.url();
-      if (reqUrl.includes('cookie') || reqUrl.includes('consent')) {
-        route.abort();  // Block the request
-      } else {
-        route.continue();  // Allow the request
+    await page.setViewportSize({ width: 1200, height: 800 });
+
+    try {
+      console.log(`Processing ${i + 1}/${urlConfigs.length}: ${url} [${strategy} strategy]`);
+
+      // Use the specified strategy
+      await strategies[strategy](page);
+
+      // Take screenshot
+      await page.screenshot({ 
+        path: path.join(imagesDir, `${i + 1}.png`),
+        clip: { x: 0, y: 0, width: 1200, height: 700 }
+      });
+
+      console.log(`  ✓ Saved: ${i + 1}.png`);
+
+    } catch (error) {
+      console.error(`  ✗ Failed: ${error.message}`);
+      
+      // Try to save screenshot anyway
+      try {
+        await page.screenshot({ 
+          path: path.join(imagesDir, `${i + 1}.png`),
+          clip: { x: 0, y: 0, width: 1200, height: 700 }
+        });
+        console.log(`  ⚠ Saved screenshot despite errors`);
+      } catch (e) {
+        console.error(`  ✗ Could not save screenshot: ${e.message}`);
       }
-    });
-
-    // Navigate and wait
-    await page.goto(url, { waitUntil: 'networkidle' });
-
-    // Set viewport for screenshot
-    await page.setViewportSize({ width: 800, height: 1600 });
-
-    // Screenshot path
-    const screenshotPath = path.join(imagesDir, `${i + 1}.png`);
-
-    // Take screenshot
-    await page.screenshot({ path: screenshotPath });
-
-    console.log(`Screenshot of ${url} saved as ${screenshotPath}`);
-
-    await page.close();
+    } finally {
+      await page.close();
+    }
   }
 
   await browser.close();
+  console.log('\n🎉 All screenshots completed!');
 })();
-

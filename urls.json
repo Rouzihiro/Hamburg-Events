@@ -1,19 +1,70 @@
 [
-  "https://www.knusthamburg.de/programm/",
-  "https://nochtspeicher.de/",
-  "https://molotowclub.com/programm/programm.php",
-  "https://spielbudenplatz.eu/erleben/events",
-  "https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor",
-  "https://schanzenkino.de/programm",
-  "http://www.abaton.de/page.pl?index",
-  "https://programm.ponybar.de/",
-  "https://www.uebelundgefaehrlich.com/",
-  "https://www.hafenklang.com/programm/",
-  "https://rausgegangen.de/en/hamburg/",
-  "http://nachtasyl.de/",
-  "https://www.zwick4u.com/live-musik-de-16.html",
-  "https://www.zwick4u.com/sport-live-de-17.html",
-  "https://www.mojo.de/programme/",
-  "https://hamburg.premiumkino.de/filmvorschau",
-  "https://hamburg.premiumkino.de/programm"
+  {
+    "url": "https://www.knusthamburg.de/programm/",
+    "strategy": "default"
+  },
+  {
+    "url": "https://nochtspeicher.de/",
+    "strategy": "default"
+  },
+  {
+    "url": "https://molotowclub.com/programm/programm.php",
+    "strategy": "default"
+  },
+  {
+    "url": "https://spielbudenplatz.eu/erleben/events",
+    "strategy": "old"
+  },
+  {
+    "url": "https://www.cinemaxx.de/kinoprogramm/hamburg-dammtor",
+    "strategy": "old"
+  },
+  {
+    "url": "https://schanzenkino.de/programm",
+    "strategy": "default"
+  },
+  {
+    "url": "http://www.abaton.de/page.pl?index",
+    "strategy": "old"
+  },
+  {
+    "url": "https://programm.ponybar.de/",
+    "strategy": "default"
+  },
+  {
+    "url": "https://www.uebelundgefaehrlich.com/",
+    "strategy": "old"
+  },
+  {
+    "url": "https://www.hafenklang.com/programm/",
+    "strategy": "default"
+  },
+  {
+    "url": "https://rausgegangen.de/en/hamburg/",
+    "strategy": "old"
+  },
+  {
+    "url": "http://nachtasyl.de/",
+    "strategy": "default"
+  },
+  {
+    "url": "https://www.zwick4u.com/live-musik-de-16.html",
+    "strategy": "default"
+  },
+  {
+    "url": "https://www.zwick4u.com/sport-live-de-17.html",
+    "strategy": "default"
+  },
+  {
+    "url": "https://www.mojo.de/programme/",
+    "strategy": "default"
+  },
+  {
+    "url": "https://hamburg.premiumkino.de/filmvorschau",
+    "strategy": "old"
+  },
+  {
+    "url": "https://hamburg.premiumkino.de/programm",
+    "strategy": "old"
+  }
 ]
