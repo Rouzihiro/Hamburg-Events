@@ -62,9 +62,5 @@
   {
     "url": "https://hamburg.premiumkino.de/filmvorschau",
     "strategy": "tall-old-20-15-0-500"
-  },
-  {
-    "url": "https://hamburg.premiumkino.de/specials",
-    "strategy": "tall-reject"
   }
 ]
