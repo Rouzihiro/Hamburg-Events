@@ -192,7 +192,6 @@
 ### Astor Filmkunsttheater Hamburg - Klassiker & Arthouse
 
 [![Astor Filmkunsttheater Hamburg](images/16.png)](https://www.astor-filmkunst.de/)
-[![Astor Filmkunsttheater Hamburg](images/17.png)](https://www.astor-filmkunst.de/)
 
 - [Google Maps Location](https://maps.app.goo.gl/64cHFjoED6hhuhmS6)
 
